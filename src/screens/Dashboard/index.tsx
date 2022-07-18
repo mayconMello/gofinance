@@ -6,6 +6,7 @@ import {
   Header,
   HighlightCards,
   Icon,
+  LogoutButton,
   Photo,
   Title,
   Transactions,
@@ -37,13 +38,13 @@ export function Dashboard() {
     },
     {
       id: '2',
-      title: "Desenvolvimento de site",
+      title: "Uber Trip",
       amount: "R$ 49,00",
       date: "14/04/2020",
       type: 'negative',
       category: {
-        name: "Alimentação",
-        icon: "coffee",
+        name: "Carro",
+        icon: "crosshair",
       }
     },
     {
@@ -70,7 +71,9 @@ export function Dashboard() {
               <UserName>Maycon</UserName>
             </User>
           </UserInfo>
-          <Icon name="power" />
+          <LogoutButton onPress={() => { }}>
+            <Icon name="power" />
+          </LogoutButton>
         </UserWrapper>
       </Header>
 
