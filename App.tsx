@@ -15,6 +15,7 @@ import 'intl/locale-data/jsonp/pt-BR';
 import theme from './src/global/styles/theme';
 
 import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
 
@@ -36,6 +37,7 @@ export default function App() {
         <NavigationContainer>
           <AppRoutes />
         </NavigationContainer>
+        <StatusBar style="light" />
       </ThemeProvider>
     </GestureHandlerRootView>
   )
