@@ -5,7 +5,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import styled, { css } from "styled-components/native";
 
 interface IconProps extends RectButtonProps {
-  type: 'up' | 'down';
+  type: 'positive' | 'negative';
 };
 
 interface ContainerProps extends IconProps {
@@ -21,11 +21,11 @@ export const Container = styled.View<ContainerProps>`
   border-color: ${({ theme }) => theme.colors.text_light};
   border-radius: 5px;
 
-  ${({ isActive, type }) => isActive && type === 'up' && css`
+  ${({ isActive, type }) => isActive && type === 'positive' && css`
     background-color: ${({ theme }) => theme.colors.success_light};
   `};
 
-  ${({ isActive, type }) => isActive && type === 'down' && css`
+  ${({ isActive, type }) => isActive && type === 'negative' && css`
     background-color: ${({ theme }) => theme.colors.attention_light};
   `};
 `;
@@ -48,7 +48,7 @@ export const Icon = styled(Feather) <IconProps>`
 
   margin-right: ${RFValue(12)}px;
 
-  color: ${({ theme, type }) => type === 'up'
+  color: ${({ theme, type }) => type === 'positive'
     ? theme.colors.success
     : theme.colors.attention
   };

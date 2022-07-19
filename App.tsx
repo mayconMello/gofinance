@@ -5,10 +5,12 @@ import {
 } from '@expo-google-fonts/poppins';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ThemeProvider } from 'styled-components';
 import { AppRoutes } from './src/routes/app.routes';
 
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
 
 import theme from './src/global/styles/theme';
 
