@@ -17,6 +17,8 @@ import theme from './src/global/styles/theme';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 
+import { SignIn } from './src/screens/SignIn'
+
 export default function App() {
 
   const [fontsLoaded] = useFonts({
@@ -35,7 +37,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider theme={theme}>
         <NavigationContainer>
-          <AppRoutes />
+          <SignIn />
         </NavigationContainer>
         <StatusBar style="light" />
       </ThemeProvider>
