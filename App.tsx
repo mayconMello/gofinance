@@ -7,17 +7,17 @@ import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'styled-components';
-import { AppRoutes } from './src/routes/app.routes';
 
 import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
 
 import theme from './src/global/styles/theme';
 
-import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import { Routes } from './src/routes';
 
-import { SignIn } from './src/screens/SignIn'
+
+import { AuthProvider } from './src/hooks/auth';
 
 export default function App() {
 
@@ -36,9 +36,9 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider theme={theme}>
-        <NavigationContainer>
-          <SignIn />
-        </NavigationContainer>
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
         <StatusBar style="light" />
       </ThemeProvider>
     </GestureHandlerRootView>
