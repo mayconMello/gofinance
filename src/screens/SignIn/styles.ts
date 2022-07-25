@@ -1,3 +1,4 @@
+import { ActivityIndicator, ActivityIndicatorProps } from "react-native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
@@ -58,3 +59,6 @@ export const FooterWrapper = styled.View`
 
   justify-content: space-between;
 `;
+
+
+export const Load = styled(ActivityIndicator) <ActivityIndicatorProps>``

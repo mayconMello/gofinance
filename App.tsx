@@ -16,18 +16,22 @@ import theme from './src/global/styles/theme';
 import { StatusBar } from 'expo-status-bar';
 import { Routes } from './src/routes';
 
+import { LogBox } from 'react-native';
 
-import { AuthProvider } from './src/hooks/auth';
+import { AuthProvider, useAuth } from './src/hooks/auth';
+
+LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 export default function App() {
-
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_700Bold
   });
 
-  if (!fontsLoaded) {
+  const { userStorageLoading } = useAuth();
+
+  if (!fontsLoaded || userStorageLoading) {
     return null;
   }
 

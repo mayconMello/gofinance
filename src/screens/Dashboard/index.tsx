@@ -1,19 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native'
-import { useFocusEffect } from '@react-navigation/native'
+import { ActivityIndicator } from 'react-native';
+import { useTheme } from 'styled-components';
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
+import { useAuth } from '../../hooks/auth';
 import { TRANSACTIONSKEY } from '../../utils/storageTables';
-import { useTheme } from 'styled-components'
 import {
   Container,
   Header,
   HighlightCards,
-  Icon,
-  LogoutButton,
-  LoadingContainer,
-  Photo,
+  Icon, LoadingContainer, LogoutButton, Photo,
   Title,
   Transactions,
   TransactionsList,
@@ -65,6 +63,8 @@ export function Dashboard() {
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [highlightData, setHighlightData] = useState<HighlightData>()
   const theme = useTheme();
+
+  const { signOut } = useAuth()
 
   async function loadTransactions() {
     const response = await AsyncStorage.getItem(
@@ -169,7 +169,7 @@ export function Dashboard() {
                     <UserName>Maycon</UserName>
                   </User>
                 </UserInfo>
-                <LogoutButton onPress={() => { }}>
+                <LogoutButton onPress={signOut}>
                   <Icon name="power" />
                 </LogoutButton>
               </UserWrapper>
