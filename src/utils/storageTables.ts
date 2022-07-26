@@ -1,3 +1,8 @@
-export const TRANSACTIONSKEY = '@gofinances:transactions'
 
-export const USERKEY = 'gofinances:user'
+
+export function getTableName(
+  table: 'transactions' | 'user',
+  userId: string
+) {
+  return `gofinances:${table}:${userId}`
+}

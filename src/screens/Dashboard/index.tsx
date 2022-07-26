@@ -1,17 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components';
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
 import { useAuth } from '../../hooks/auth';
-import { TRANSACTIONSKEY } from '../../utils/storageTables';
+import { getTableName } from '../../utils/storageTables';
 import {
   Container,
   Header,
   HighlightCards,
-  Icon, LoadingContainer, LogoutButton, Photo,
+  Icon,
+  Loading,
+  LoadingContainer,
+  LogoutButton,
+  Photo,
   Title,
   Transactions,
   TransactionsList,
@@ -64,11 +67,11 @@ export function Dashboard() {
   const [highlightData, setHighlightData] = useState<HighlightData>()
   const theme = useTheme();
 
-  const { signOut } = useAuth()
+  const { signOut, user } = useAuth()
 
   async function loadTransactions() {
     const response = await AsyncStorage.getItem(
-      TRANSACTIONSKEY
+      getTableName('transactions', user.id)
     )
 
     const transactions = response ? JSON.parse(response) : []
@@ -154,7 +157,7 @@ export function Dashboard() {
       {
         isLoading ?
           <LoadingContainer>
-            <ActivityIndicator
+            <Loading
               color={theme.colors.primary}
               size="large"
             />
@@ -163,10 +166,10 @@ export function Dashboard() {
             <Header>
               <UserWrapper>
                 <UserInfo>
-                  <Photo source={{ uri: 'https://github.com/mayconMello.png' }} />
+                  <Photo source={{ uri: user.photo }} />
                   <User>
                     <UserGreeting>Olá, </UserGreeting>
-                    <UserName>Maycon</UserName>
+                    <UserName>{user.name}</UserName>
                   </User>
                 </UserInfo>
                 <LogoutButton onPress={signOut}>
@@ -203,8 +206,10 @@ export function Dashboard() {
               <Title>Listagem</Title>
               <TransactionsList
                 data={transactions}
-                keyExtractor={item => item.id}
-                renderItem={({ item }) => <TransactionCard data={item} />}
+                keyExtractor={(item: DataListProps) => item.id}
+                renderItem={({ item }: { item: DataListProps }) => (
+                  <TransactionCard data={item} />
+                )}
               />
             </Transactions>
           </>

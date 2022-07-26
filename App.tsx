@@ -1,10 +1,11 @@
 import {
   Poppins_400Regular,
   Poppins_500Medium,
-  Poppins_700Bold, useFonts
+  Poppins_700Bold
 } from '@expo-google-fonts/poppins';
+import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'styled-components';
 
@@ -23,22 +24,43 @@ import { AuthProvider, useAuth } from './src/hooks/auth';
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_500Medium,
-    Poppins_700Bold
-  });
-
+  const [appIsReady, setAppIsReady] = useState(false);
   const { userStorageLoading } = useAuth();
 
-  if (!fontsLoaded || userStorageLoading) {
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+        await Font.loadAsync({
+          Poppins_400Regular,
+          Poppins_500Medium,
+          Poppins_700Bold
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, [])
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady || userStorageLoading) {
     return null;
   }
 
-  SplashScreen.hideAsync()
-
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView
+      style={{ flex: 1 }}
+      onLayout={onLayoutRootView}
+    >
       <ThemeProvider theme={theme}>
         <AuthProvider>
           <Routes />

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ActivityIndicator, Alert } from "react-native";
+import React from "react";
+import { Alert } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useTheme } from 'styled-components';
 
@@ -12,23 +12,24 @@ import {
   Container,
   Footer,
   FooterWrapper,
-  Header, SignInTitle, Title,
+  Header,
+  Loading,
+  SignInTitle,
+  Title,
   TitleWrapper
 } from './styles';
 
 export function SignIn() {
 
-  const [isLoading, setIsLoading] = useState(false);
-  const { signInWithGoogle } = useAuth()
+  const { signInWithGoogle, setUserStorageLoading, userStorageLoading } = useAuth()
 
   const theme = useTheme();
 
 
   async function handleSignInWithGoogle() {
     try {
-      setIsLoading(true);
+      setUserStorageLoading(true);
       await signInWithGoogle();
-      setIsLoading(false);
     } catch (error) {
       console.log(error)
       Alert.alert('Não foi possível conectar a conta Google!')
@@ -66,13 +67,13 @@ export function SignIn() {
           />
         </FooterWrapper>
 
-        {isLoading &&
-          <ActivityIndicator
+        {userStorageLoading &&
+          <Loading
             color={theme.colors.shape}
             style={{ marginTop: 18 }}
-          />}
+          />
+        }
       </Footer>
-
     </Container>
   )
 }

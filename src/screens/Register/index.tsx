@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Alert,
-  Keyboard,
-  Modal,
-  TouchableWithoutFeedback
+  Keyboard
 } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as Yup from 'yup';
@@ -21,12 +19,16 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { AppRoutesParamList } from '../../routes/app.routes';
-import { TRANSACTIONSKEY } from '../../utils/storageTables';
+import { getTableName } from '../../utils/storageTables';
 import {
-  Container, Fields, Form, Header,
-  Title,
-  TransactionsType
+  Container,
+  Fields,
+  Form,
+  Header,
+  Modal,
+  Title, TouchableWithoutFeedback, TransactionsType
 } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 export interface FormData {
   name: string;
@@ -48,6 +50,7 @@ const shema = Yup.object().shape({
 type RegisterNaviationProps = BottomTabNavigationProp<AppRoutesParamList>
 
 export function Register() {
+  const { user } = useAuth()
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
@@ -113,13 +116,13 @@ export function Register() {
     try {
 
       const data = await AsyncStorage.getItem(
-        TRANSACTIONSKEY
+        getTableName('transactions', user.id)
       )
 
       const currentData = data ? JSON.parse(data) : []
 
       await AsyncStorage.setItem(
-        TRANSACTIONSKEY,
+        getTableName('transactions', user.id),
         JSON.stringify([
           ...currentData,
           newTransaction
@@ -141,7 +144,7 @@ export function Register() {
   useEffect(() => {
     async function loadData() {
       const data = await AsyncStorage.getItem(
-        TRANSACTIONSKEY
+        getTableName('transactions', user.id)
       )
 
       console.log(JSON.parse(data!))

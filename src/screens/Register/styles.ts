@@ -43,3 +43,7 @@ export const TransactionsType = styled.View`
   margin-top: 8px;
   margin-bottom: 16px;
 `
+
+export const TouchableWithoutFeedback = styled.TouchableWithoutFeedback``;
+
+export const Modal = styled.Modal``;

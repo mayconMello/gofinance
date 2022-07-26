@@ -1,8 +1,8 @@
-import styled from 'styled-components/native';
-import { FlatList, FlatListProps } from 'react-native';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';
+import { FlatList, FlatListProps } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import styled from 'styled-components/native';
 
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { DataListProps } from '.';
@@ -96,10 +96,7 @@ export const Title = styled.Text`
   margin-bottom: 16px;
 `;
 
-export const TransactionsList = styled(
-  FlatList as new (props: FlatListProps<DataListProps>) =>
-    FlatList<DataListProps>
-).attrs({
+export const TransactionsList = styled(FlatList as any).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
     paddingBottom: getBottomSpace()
@@ -111,4 +108,6 @@ export const LoadingContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-`
+`;
+
+export const Loading = styled.ActivityIndicator``;

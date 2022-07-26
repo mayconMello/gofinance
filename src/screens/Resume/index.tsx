@@ -1,22 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addMonths, format, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTheme } from 'styled-components';
 import { VictoryPie } from 'victory-native';
 import { HistoryCard } from '../../components/HistoryCard';
 import { categories } from '../../utils/categories';
-import { TRANSACTIONSKEY } from '../../utils/storageTables';
+import { getTableName } from '../../utils/storageTables';
 
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect } from '@react-navigation/native';
-import { ActivityIndicator } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import {
   ChartContainer,
   Container,
   Content,
   Header,
+  Loading,
   LoadingContainer,
   Month,
   MonthSelect,
@@ -24,6 +24,7 @@ import {
   MonthSelectIcon,
   Title
 } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 interface TransactionData {
   transactionType: 'positive' | 'negative'
@@ -45,6 +46,7 @@ interface CategoryData {
 export function Resume() {
 
   const theme = useTheme();
+  const { user } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false)
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -60,7 +62,7 @@ export function Resume() {
 
   async function loadData() {
     const response = await AsyncStorage.getItem(
-      TRANSACTIONSKEY
+      getTableName('transactions', user.id)
     )
 
     const responseFormatted: TransactionData[] = response
@@ -136,7 +138,7 @@ export function Resume() {
       {
         isLoading ?
           <LoadingContainer>
-            <ActivityIndicator
+            <Loading
               color={theme.colors.primary}
               size="large"
             />
